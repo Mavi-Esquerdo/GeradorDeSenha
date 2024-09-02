@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Modal } from 'react-native';
+import { ModalPassword } from './src/components/ modal';
 
 let charset = "abcdefghijklmnopqrstuvwxyz!#$&%0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -8,16 +9,22 @@ let charset = "abcdefghijklmnopqrstuvwxyz!#$&%0123456789ABCDEFGHIJKLMNOPQRSTUVWX
 export default function App() {
 
   const [senhaGerada, setSenhaGerada] = useState("")
-function gerarSenha() {
+  const [modalVisible, setModalVisible] = useState(false)
 
-  let senha = "";
+  function gerarSenha() {
 
-  for (let i = 0, n = charset.length; i < 10; i++) {
-    senha += charset.charAt(Math.floor(Math.random() * n))
+    let senha = "";
 
+    for (let i = 0, n = charset.length; i < 10; i++) {
+      senha += charset.charAt(Math.floor(Math.random() * n))
+
+    }
+
+    setSenhaGerada(senha)
+    setModalVisible(true);
   }
-  setSenhaGerada(senha)
-}
+
+  
   return (
     <View style={styles.container}>
       <Image
@@ -31,7 +38,10 @@ function gerarSenha() {
         <Text style={styles.textButton}>Gerar Senha!!</Text>
       </TouchableOpacity>
 
-      <Text style={styles.genText}>Senha Gerada   {senhaGerada}</Text>
+      <Modal visible={modalVisible} animationType='fade' transparent={true}>
+        <ModalPassword />
+      </Modal>
+      <Text style={styles.genText}> {senhaGerada}</Text>
     </View>
   );
 }
